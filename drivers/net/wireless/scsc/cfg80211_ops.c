@@ -169,7 +169,7 @@ int slsi_change_virtual_intf(struct wiphy *wiphy,
 
 	SLSI_NET_DBG1(dev, SLSI_CFG80211, "type:%u, iftype:%d\n", type, ndev_vif->iftype);
 
-	if (ndev_vif->vif_type != FAPI_VIFTYPE_AP && WARN_ON(ndev_vif->activated)) {
+	if (WARN_ON(ndev_vif->activated)) {
 		r = -EINVAL;
 		goto exit;
 	}
@@ -1612,6 +1612,8 @@ int slsi_del_station(struct wiphy *wiphy, struct net_device *dev,
 		/* Free WPA and WMM IEs if present */
 		slsi_clear_cached_ies(&ndev_vif->ap.cache_wpa_ie, &ndev_vif->ap.wpa_ie_len);
 		slsi_clear_cached_ies(&ndev_vif->ap.cache_wmm_ie, &ndev_vif->ap.wmm_ie_len);
+
+		netif_carrier_off(dev);
 
 		/* All STA related packets and info should already have been flushed */
 		if (slsi_mlme_del_vif(sdev, dev) != 0)
