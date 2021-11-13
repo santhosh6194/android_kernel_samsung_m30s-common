@@ -1614,9 +1614,6 @@ int slsi_del_station(struct wiphy *wiphy, struct net_device *dev,
 		slsi_clear_cached_ies(&ndev_vif->ap.cache_wmm_ie, &ndev_vif->ap.wmm_ie_len);
 
 		/* All STA related packets and info should already have been flushed */
-		if (slsi_mlme_del_vif(sdev, dev) != 0)
-			SLSI_NET_ERR(dev, "slsi_mlme_del_vif failed\n");
-		slsi_vif_deactivated(sdev, dev);
 		ndev_vif->ipaddress = cpu_to_be32(0);
 
 		if (ndev_vif->ap.p2p_gc_keys_set) {
